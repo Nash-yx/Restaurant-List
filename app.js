@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
+const { engine } = require('express-handlebars');
 const path = require('path');
 const portNum = 3000;
+
+app.engine('.hbs', engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname, 'view'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -10,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/restaurant', (req, res) => {
-  res.send('listing menu');
+  res.render('index.hbs');
 });
 
 app.get('/restaurant/:id', (req, res) => {
