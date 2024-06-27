@@ -14,20 +14,38 @@ app.set('views', path.join(__dirname, 'views'));
 // 設定靜態檔
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.get('/', (req, res) => {
   res.redirect('/restaurant');
 });
 
 app.get('/restaurant', (req, res) => {
-  res.render('index.hbs', { restaurants });
+  res.render('index.hbs', { restaurants: restaurants });
 });
 
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id;
   const restaurant = restaurants.find((item) => item.id.toString() === id);
   // const restaurant = restaurants.filter((item) => item.id.toString() === id)[0];
-  res.render('detail.hbs', { restaurant });
+  res.render('detail.hbs', { restaurant: restaurant });
+});
+
+app.get('/search', (req, res) => {
+  const search = req.query.keyword.trim();
+  const matchedRestaurant = search
+    ? restaurants.filter((item) =>
+        Object.values(item).some((value) => {
+          if (value) {
+            return value
+              .toString()
+              .toLowerCase()
+              .includes(search.toLowerCase());
+          }
+          return false;
+        })
+      )
+    : restaurants;
+  console.log(matchedRestaurant);
+  res.render('index.hbs', { restaurants: matchedRestaurant, search: search });
 });
 
 app.listen(portNum, () => {
