@@ -4,6 +4,8 @@ const { engine } = require('express-handlebars');
 const path = require('path');
 const portNum = 3000;
 
+const restaurants = require('./public/jsons/restaurant.json').results;
+
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'view'));
@@ -15,10 +17,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/restaurant', (req, res) => {
-  res.render('index.hbs');
+  res.render('index.hbs', { restaurants });
 });
 
-app.get('/restaurant/:id', (req, res) => {
+app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id;
   res.send(`read restaurant: ${id}`);
 });

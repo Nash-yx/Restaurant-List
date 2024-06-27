@@ -1,11 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My restaurant</title>
-</head>
-<body>
-  {{{body}}}
-</body>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link rel='stylesheet' href='/stylesheets/main.css' />
+    <title>My restaurant</title>
+  </head>
+  <body>
+    <!-- navigation -->
+    <nav class='navbar navbar-light bg-light'>
+      <div class='container'>
+        <a class='navbar-brand' href='/'>
+          <img
+            src='https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png'
+            width='30'
+            height='30'
+            class='d-inline-block align-top'
+            alt='我的餐廳清單'
+          />
+          我的餐廳清單
+        </a>
+      </div>
+    </nav>
+
+    <div class='banner'></div>
+
+    <!-- search bar -->
+    <div class='container search-bar'>
+      <div class='search-bar-outer'>
+        <div class='search-bar-inner'>
+          <form action='/search'>
+            <h4 class='mb-2'>尋找餐廳：</h4>
+            <div class='input-group'>
+              <input
+                type='text'
+                name='keyword'
+                class='form-control'
+                placeholder='輸入餐廳、分類'
+                aria-label='Restaurant Name...'
+                value=''
+                aria-describedby='search-button'
+              />
+              <div class='input-group-append'>
+                <button
+                  class='btn btn-major'
+                  type='submit'
+                  id='search-button'
+                ><i class='fas fa-search'></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {{{body}}}
+
+    <script src='/javascripts/bootstrap.bundle.min.js'></script>
+  </body>
 </html>
