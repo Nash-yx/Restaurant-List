@@ -15,14 +15,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.redirect('/restaurant');
+  res.redirect('/restaurants');
 });
 
-app.get('/restaurant', (req, res) => {
+app.get('/restaurants', (req, res) => {
   res.render('index.hbs', { restaurants: restaurants });
 });
 
-app.get('/restaurants/:id', (req, res) => {
+app.get('/restaurant/:id', (req, res) => {
   const id = req.params.id;
   const restaurant = restaurants.find((item) => item.id.toString() === id);
   // const restaurant = restaurants.filter((item) => item.id.toString() === id)[0];
