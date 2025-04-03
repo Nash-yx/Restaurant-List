@@ -44,16 +44,33 @@ app.get('/restaurants', async (req, res) => {
   }
 });
 
+app.get('/restaurant/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const restaurant = await Restaurant.findByPk(id, {
+      attributes: [
+        'id',
+        'name',
+        'name_en',
+        'category',
+        'image',
+        'location',
+        'phone',
+        'google_map',
+        'rating',
+        'description',
+      ],
+      raw: true,
+    });
+    return res.render('detail', { restaurant });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.get('/restaurant/:id/edit', (req, res) => {
   const id = req.params.id;
   res.send(`restaurant ${id} edited`);
-});
-
-app.get('/restaurant/:id', (req, res) => {
-  const id = req.params.id;
-  const restaurant = restaurants.find((item) => item.id.toString() === id);
-  // const restaurant = restaurants.filter((item) => item.id.toString() === id)[0];
-  res.render('detail.hbs', { restaurant: restaurant });
 });
 
 app.get('/search', (req, res) => {
