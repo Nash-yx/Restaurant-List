@@ -21,8 +21,27 @@ app.get('/', (req, res) => {
   return Restaurant.findAll().then((info) => res.send({ info }));
 });
 
-app.get('/restaurants', (req, res) => {
-  res.render('index.hbs', { restaurants: restaurants });
+app.get('/restaurants', async (req, res) => {
+  try {
+    const restaurants = await Restaurant.findAll({
+      attributes: [
+        'id',
+        'name',
+        'name_en',
+        'category',
+        'image',
+        'location',
+        'phone',
+        'google_map',
+        'rating',
+        'description',
+      ],
+      raw: true,
+    });
+    return res.render('index', { restaurants });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get('/restaurant/:id/edit', (req, res) => {
