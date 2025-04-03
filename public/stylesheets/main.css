@@ -15,7 +15,8 @@ header {
   z-index: -1;
   margin: -5px;
   height: 360px;
-  background: #dddddd center center url('https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg');
+  background: #dddddd center center
+    url('https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg');
   background-size: cover;
   filter: blur(3px);
 }
@@ -62,14 +63,14 @@ header {
   padding-top: 0;
 }
 
-.card img{
+.card img {
   height: 180px;
 }
 
-.card-title{
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .restaurant-category {
@@ -87,23 +88,68 @@ header {
 }
 
 @media screen and (max-width: 992px) {
-
-  .card img{
+  .card img {
     height: 115px;
   }
 }
 
 @media screen and (max-width: 768px) {
-
   .restaurant-show-title {
     font-size: 2rem;
   }
 }
 
 @media screen and (max-width: 575px) {
-
-  .card img{
+  .card img {
     height: auto;
   }
+}
 
+/* create button style */
+.text-aqua {
+  color: #00b4d8 !important; /* 青藍色 */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.text-aqua:hover {
+  color: #0077b6 !important;
+  /* 深海藍 */
+  transform: translateY(-1px);
+}
+.btn-link:hover {
+  border-color: rgba(0, 180, 216, 0.2) !important;
+  background-color: rgba(0, 180, 216, 0.05);
+}
+
+/* card footer style */
+.card-footer .btn-link {
+  border: none !important;
+  background: transparent !important;
+  transition: all 0.2s;
+  text-decoration: none !important; /* 移除底線 */
+  padding: 6px 12px !important; /* 加大按鈕尺寸 */
+}
+
+.card-footer .btn-link:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 4px;
+}
+
+/* 刪除按鈕樣式 */
+.btn-danger {
+  background-color: #ff4444 !important;
+  border: 1px solid #ff4444 !important;
+  border-radius: 4px;
+  padding: 6px 12px !important;
+}
+
+.btn-danger:hover {
+  background-color: #cc0000 !important;
+  border-color: #cc0000 !important;
+}
+
+/* 圖標尺寸調整 */
+.fa-pencil-alt,
+.fa-eye,
+.fa-trash {
+  font-size: 14px;
 }

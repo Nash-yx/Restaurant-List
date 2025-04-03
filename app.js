@@ -22,6 +22,11 @@ app.get('/restaurants', (req, res) => {
   res.render('index.hbs', { restaurants: restaurants });
 });
 
+app.get('/restaurant/:id/edit', (req, res) => {
+  const id = req.params.id;
+  res.send(`restaurant ${id} edited`);
+});
+
 app.get('/restaurant/:id', (req, res) => {
   const id = req.params.id;
   const restaurant = restaurants.find((item) => item.id.toString() === id);
