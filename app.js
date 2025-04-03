@@ -4,6 +4,9 @@ const { engine } = require('express-handlebars');
 const path = require('path');
 const portNum = 3000;
 
+const db = require('./models');
+const Restaurant = db.Restaurant;
+
 const restaurants = require('./public/jsons/restaurant.json').results;
 
 // 設定模板引擎
@@ -15,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.redirect('/restaurants');
+  return Restaurant.findAll().then((info) => res.send({ info }));
 });
 
 app.get('/restaurants', (req, res) => {
