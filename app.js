@@ -16,9 +16,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 設定靜態檔
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  return Restaurant.findAll().then((info) => res.send({ info }));
+  return res.redirect('/restaurants');
 });
 
 app.get('/restaurants', async (req, res) => {
@@ -39,6 +40,20 @@ app.get('/restaurants', async (req, res) => {
       raw: true,
     });
     return res.render('index', { restaurants });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get('/restaurant/new', (req, res) => {
+  res.render('create');
+});
+
+app.post('/restaurants', async (req, res) => {
+  const info = req.body;
+  try {
+    await Restaurant.create(info);
+    return res.redirect('/restaurants');
   } catch (err) {
     console.log(err);
   }
