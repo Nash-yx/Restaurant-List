@@ -63,18 +63,6 @@ app.get('/restaurant/:id', async (req, res) => {
   const id = req.params.id;
   try {
     const restaurant = await Restaurant.findByPk(id, {
-      attributes: [
-        'id',
-        'name',
-        'name_en',
-        'category',
-        'image',
-        'location',
-        'phone',
-        'google_map',
-        'rating',
-        'description',
-      ],
       raw: true,
     });
     return res.render('detail', { restaurant });
