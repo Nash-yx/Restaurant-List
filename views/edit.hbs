@@ -1,0 +1,189 @@
+<div class='container my-5'>
+  <h2 class='mb-4'>新增餐廳</h2>
+
+  <form
+    action='/restaurant/{{restaurant.id}}?_method=PUT'
+    method='POST'
+    class='needs-validation'
+    novalidate
+    id='createForm'
+  >
+    <div class='row g-3'>
+      <!-- 左側欄位 -->
+      <div class='col-md-6'>
+        <!-- 餐廳名稱 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='text'
+            class='form-control'
+            id='name'
+            name='name'
+            placeholder='餐廳名稱'
+            value='{{restaurant.name}}'
+            required
+          />
+          <label for='name'>餐廳名稱 <span class='text-danger'>*</span></label>
+        </div>
+
+        <!-- 英文名稱 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='text'
+            class='form-control'
+            id='name_en'
+            name='name_en'
+            placeholder='餐廳英文名稱（選填）'
+            value='{{restaurant.name_en}}'
+          />
+          <label for='name_en'>餐廳英文名稱（選填）</label>
+        </div>
+
+        <!-- 餐廳類別 -->
+        <div class='form-floating mb-3'>
+          <select class='form-select' id='category' name='category' value='{{restaurant.category}}' required>
+            <option value='' selected disabled>請選擇類別</option>
+            <option value='台式料理'>台式料理</option>
+            <option value='中式料理'>中式料理</option>
+            <option value='日式料理'>日式料理</option>
+            <option value='韓式料理'>韓式料理</option>
+            <option value='泰式料理'>泰式料理</option>
+            <option value='美式料理'>美式料理</option>
+            <option value='義式料理'>義式料理</option>
+            <option value='法式料理'>法式料理</option>
+            <option value='中東料理'>中東料理</option>
+            <option value='酒吧'>酒吧</option>
+            <option value='咖啡'>咖啡</option>
+            <option value='下午茶'>下午茶</option>
+            <option value='早午餐'>早午餐</option>
+            <option value='其他'>其他</option>
+          </select>
+          <label for='category'>餐廳類別
+            <span class='text-danger'>*</span></label>
+        </div>
+
+        <!-- 餐廳圖片 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='url'
+            class='form-control'
+            id='image'
+            name='image'
+            placeholder='請輸入圖片網址 (空白使用預設圖)'
+            pattern='https?://.+'
+            value='{{restaurant.image}}'
+          />
+          <label for='image'>餐廳圖片網址</label>
+        </div>
+      </div>
+
+      <!-- 右側欄位 -->
+      <div class='col-md-6'>
+        <!-- 地址 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='text'
+            class='form-control'
+            id='location'
+            name='location'
+            placeholder='餐廳地址'
+            value='{{restaurant.location}}'
+            required
+          />
+          <label for='location'>餐廳地址
+            <span class='text-danger'>*</span></label>
+        </div>
+
+        <!-- 電話 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='tel'
+            class='form-control'
+            id='phone'
+            name='phone'
+            placeholder='餐廳電話'
+            value='{{restaurant.phone}}'
+            required
+          />
+          <label for='phone'>餐廳電話 <span class='text-danger'>*</span></label>
+        </div>
+
+        <!-- Google Map -->
+        <div class='form-floating mb-3'>
+          <input
+            type='url'
+            class='form-control'
+            id='google_map'
+            name='google_map'
+            placeholder='請輸入Google Map 連結'
+            value='{{restaurant.google_map}}'
+          />
+          <label for='google_map'>Google Map 連結</label>
+        </div>
+
+        <!-- 評分 -->
+        <div class='form-floating mb-3'>
+          <input
+            type='number'
+            class='form-control'
+            id='rating'
+            name='rating'
+            min='1'
+            max='5'
+            step='0.1'
+            placeholder='輸入評分 1 ~ 5（例：3.5）'
+            value='{{restaurant.rating}}'
+            required
+          />
+          <label for='rating'>餐廳評分
+            <span class='text-danger'>*</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 說明 -->
+    <div class='form-floating mb-4'>
+      <textarea
+        class='form-control'
+        id='description'
+        name='description'
+        style='height: 100px'
+        placeholder='說明（選填）'
+        value='{{restaurant.description}}'
+      ></textarea>
+      <label for='description'>說明（選填）</label>
+    </div>
+
+
+    <!-- 按鈕組 -->
+    <div class='d-flex justify-content-end gap-2'>
+      <button type='submit' class='btn btn-success'>
+        <i class='fas fa-edit me-2'></i>儲存
+      </button>
+      <button type='reset' class='btn btn-outline-secondary'>
+        <i class='fas fa-undo me-2'></i>復原
+      </button>
+      <a href='/' class='btn btn-outline-dark'>
+        <i class='fas fa-arrow-left me-2'></i>返回
+      </a>
+    </div>
+  </form>
+</div>
+
+<script>
+const DEFAULT_IMAGE = 'https://i.pinimg.com/736x/01/7c/44/017c44c97a38c1c4999681e28c39271d.jpg';
+
+document.getElementById('createForm').addEventListener('submit', function(e) {
+  // 自動補齊圖片網址
+  const imageInput = document.getElementById('image');
+  if (!imageInput.value.trim()) {
+    imageInput.value = DEFAULT_IMAGE;
+  }
+
+  // 原生驗證
+  if (!this.checkValidity()) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  this.classList.add('was-validated');
+});
+</script>

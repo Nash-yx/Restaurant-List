@@ -70,7 +70,7 @@
                 </div>
               </a>
 
-              <div class='card-footer bg-transparent border-top-0 pb-3 pt-1'>
+              <div class='card-footer bg-transparent border-top-0 pb-1 pt-1'>
                 <div
                   class='border-top mb-2'
                   style='margin: 8px 0; border-color: #dee2e6 !important;'
@@ -79,7 +79,7 @@
                   <!-- 編輯按鈕 -->
                   <a
                     href='/restaurant/{{restaurant.id}}/edit'
-                    class='btn btn-link text-muted p-1 d-flex align-items-center'
+                    class='btn btn-link text-muted p-1 d-flex align-items-center btn-uniform'
                     style='font-size: 0.95rem;'
                   >
                     <i class='fas fa-pencil-alt me-1'></i>
@@ -89,7 +89,7 @@
                   <!-- 詳細按鈕 -->
                   <a
                     href='/restaurant/{{restaurant.id}}'
-                    class='btn btn-link text-muted p-1 d-flex align-items-center'
+                    class='btn btn-link text-muted p-1 d-flex align-items-center btn-uniform'
                     style='font-size: 0.95rem;'
                   >
                     <i class='fas fa-eye me-1'></i>
@@ -97,14 +97,16 @@
                   </a>
 
                   <!-- 刪除按鈕 -->
-                  <button
-                    type='button'
-                    class='btn btn-sm btn-danger d-flex align-items-center px-2'
-                    data-bs-toggle='modal'
-                    data-bs-target='#deleteModal'
-                  >
-                    <i class='fas fa-trash'></i>
-                  </button>
+                  <form action='/restaurant/{{restaurant.id}}?_method=DELETE' method="POST">
+                    <button
+                      type='submit'
+                      class='btn btn-sm btn-danger d-flex align-items-center px-2 btn-uniform'
+                      onclick="return confirm('確定要刪除這間餐廳嗎？')"
+                    >
+                      <i class='fas fa-trash'></i>
+                    </button>
+                  </form>
+
                 </div>
               </div>
 
