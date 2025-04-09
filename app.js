@@ -11,7 +11,15 @@ const Restaurant = db.Restaurant;
 const restaurants = require('./public/jsons/restaurant.json').results;
 
 // 設定模板引擎
-app.engine('.hbs', engine({ extname: '.hbs' }));
+app.engine('.hbs', engine({
+    extname: '.hbs',
+    helpers: {
+      eq: function (a, b) {
+        return a === b;
+      },
+    },
+  })
+);
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
 

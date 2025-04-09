@@ -36,6 +36,21 @@ header {
   color: #9b4b4b;
 }
 
+.input-group {
+  align-items: center; /* 垂直居中 */
+}
+
+.input-group .form-control {
+  border-right: none !important; /* 移除輸入框右邊框 */
+}
+
+.input-group-append .btn {
+  display: flex;
+  align-items: center;  /* 圖標垂直居中 */
+  justify-content: center; /* 圖標水平居中 */
+  border-left: none !important;
+}
+
 .form-control::placeholder {
   color: #aaaaaa;
   font-size: 0.8rem;
@@ -106,18 +121,21 @@ header {
 }
 
 /* create button style */
-.text-aqua {
-  color: #00b4d8 !important; /* 青藍色 */
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.create-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
-.text-aqua:hover {
-  color: #0077b6 !important;
-  /* 深海藍 */
-  transform: translateY(-1px);
+
+.create-btn a {
+  margin-right: 10px;
+  align-self: center;
+  color: #4593b0;
+  text-decoration: none;
 }
-.btn-link:hover {
-  border-color: rgba(0, 180, 216, 0.2) !important;
-  background-color: rgba(0, 180, 216, 0.05);
+
+.create-btn a:hover {
+  color: #226089;
 }
 
 /* card footer style */
