@@ -47,11 +47,11 @@
       <hr class='my-4' />
 
       <div class='d-flex justify-content-end gap-2 mb-4'>
-        <a href='/restaurant/{{restaurant.id}}/edit' class='btn btn-success btn-uniform'>
+        <a href='/restaurants/{{restaurant.id}}/edit' class='btn btn-success btn-uniform'>
           <i class='fas fa-edit me-2'></i>編輯
         </a>
         <form
-          action='/restaurant/{{restaurant.id}}?_method=DELETE'
+          action='/restaurants/{{restaurant.id}}?_method=DELETE'
           method='POST'
           class='d-inline'
         >

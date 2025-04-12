@@ -5,7 +5,7 @@
 
       <div class='create-btn'>
         <h4>尋找餐廳：</h4>
-        <a href='/restaurant/new'>
+        <a href='/restaurants/new'>
           <i class='fa-solid fa-circle-plus'></i>
           Create
         </a>
@@ -65,7 +65,7 @@
             <div class='card h-100'>
               <!-- 新增h-100統一高度 -->
               <a
-                href='/restaurant/{{restaurant.id}}'
+                href='/restaurants/{{restaurant.id}}'
                 class='text-secondary text-decoration-none'
               >
                 <img
@@ -96,7 +96,7 @@
                 <div class='d-flex justify-content-center gap-3'>
                   <!-- 編輯按鈕 -->
                   <a
-                    href='/restaurant/{{restaurant.id}}/edit'
+                    href='/restaurants/{{restaurant.id}}/edit'
                     class='btn btn-link text-muted p-1 d-flex align-items-center btn-uniform'
                     style='font-size: 0.95rem;'
                   >
@@ -106,7 +106,7 @@
 
                   <!-- 詳細按鈕 -->
                   <a
-                    href='/restaurant/{{restaurant.id}}'
+                    href='/restaurants/{{restaurant.id}}'
                     class='btn btn-link text-muted p-1 d-flex align-items-center btn-uniform'
                     style='font-size: 0.95rem;'
                   >
@@ -116,7 +116,7 @@
 
                   <!-- 刪除按鈕 -->
                   <form
-                    action='/restaurant/{{restaurant.id}}?_method=DELETE'
+                    action='/restaurants/{{restaurant.id}}?_method=DELETE'
                     method='POST'
                   >
                     <button
