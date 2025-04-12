@@ -35,6 +35,7 @@ router.post('/', async (req, res) => {
   const info = req.body;
   try {
     await Restaurant.create(info);
+    req.flash('success','新增成功')
     return res.redirect('/restaurants');
   } catch (err) {
     console.log(err);
@@ -83,6 +84,7 @@ router.put('/:id', async (req, res) => {
       },
       { where: { id } }
     );
+    req.flash('success','更新成功')
     return res.redirect(`/restaurants/${id}`);
   } catch (err) {
     console.log(err);
@@ -93,6 +95,7 @@ router.delete('/:id', async (req, res) => {
   const id = req.params.id;
   try {
     await Restaurant.destroy({ where: { id } });
+    req.flash('delete', '刪除成功！');
     return res.redirect('/restaurants');
   } catch (err) {
     console.log(err);

@@ -1,3 +1,4 @@
+/* 頁頭和導航欄樣式 */
 header {
   overflow: hidden;
 }
@@ -10,6 +11,7 @@ header {
   color: #226089;
 }
 
+/* 橫幅樣式 */
 .banner {
   position: relative;
   z-index: -1;
@@ -21,6 +23,7 @@ header {
   filter: blur(3px);
 }
 
+/* 搜索欄樣式 */
 .search-bar .search-bar-outer {
   margin: 0 auto;
   max-width: 680px;
@@ -56,9 +59,17 @@ header {
   font-size: 0.8rem;
 }
 
+/* 按鈕樣式 */
 .btn-major {
   background-color: #9b4b4b;
   color: white;
+}
+
+/* 從detail.css添加的按鈕統一高度樣式 */
+.btn-uniform {
+  height: 38px;
+  display: flex;
+  align-items: center;
 }
 
 .form-control:focus {
@@ -66,6 +77,7 @@ header {
   border-color: #ced4da;
 }
 
+/* 卡片樣式 */
 .card {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
@@ -74,6 +86,7 @@ header {
 .card:hover {
   transform: translateY(-5px);
 }
+
 .card-footer {
   padding-top: 0;
 }
@@ -102,25 +115,7 @@ header {
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-@media screen and (max-width: 992px) {
-  .card img {
-    height: 115px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .restaurant-show-title {
-    font-size: 2rem;
-  }
-}
-
-@media screen and (max-width: 575px) {
-  .card img {
-    height: auto;
-  }
-}
-
-/* create button style */
+/* 創建按鈕樣式 */
 .create-btn {
   display: flex;
   justify-content: space-between;
@@ -138,7 +133,7 @@ header {
   color: #226089;
 }
 
-/* card footer style */
+/* 卡片頁腳樣式 */
 .card-footer .btn-link {
   border: none !important;
   background: transparent !important;
@@ -170,4 +165,23 @@ header {
 .fa-eye,
 .fa-trash {
   font-size: 14px;
+}
+
+/* 響應式設計 */
+@media screen and (max-width: 992px) {
+  .card img {
+    height: 115px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .restaurant-show-title {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .card img {
+    height: auto;
+  }
 }
