@@ -10,7 +10,9 @@ const messageHandler = require('./middlewares/message-handler');
 const errorHandler = require('./middlewares/error-handler');
 const portNum = 3000;
 
-// const restaurants = require('./public/jsons/restaurant.json').results;
+if(process.env.NODE_ENV === 'development'){
+  require('dotenv').config()
+}
 
 // 設定模板引擎
 app.engine('.hbs', engine({
@@ -30,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(session({
-  secret: 'ThisIsSecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }))
