@@ -10,8 +10,17 @@
 
 <div class="flash-container" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 200px; text-align: center;">
   {{#if delete_msg}}
-    <div class="alert alert-success alert-dismissible fade show flash-message" role="alert" style="background-color: rgba(220,53,69,0.6); color:white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border:none">
+    <div class="alert alert-delete alert-dismissible fade show flash-message" role="alert" style="background-color: rgba(220,53,69,0.6); color:white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border:none">
       {{delete_msg}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {{/if}}
+</div>
+
+<div class="flash-container" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 200px; text-align: center;">
+  {{#if error_msg}}
+    <div class="alert alert-error alert-dismissible fade show flash-message" role="alert" style="background-color: rgba(220,53,69,0.6); color:white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border:none">
+      {{error_msg}}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   {{/if}}
@@ -28,7 +37,7 @@
           // 關閉提示
           alert.close();
         });
-      }, 2000); // 2 秒後自動消失
+      }, 3000); // 3 秒後自動消失
     }
   });
 </script>

@@ -1,10 +1,10 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
 const db = require('../models');
 const Restaurant = db.Restaurant;
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const restaurants = await Restaurant.findAll({
       attributes: [
@@ -23,7 +23,8 @@ router.get('/', async (req, res) => {
     });
     return res.render('index', { restaurants });
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 
@@ -31,18 +32,19 @@ router.get('/new', (req, res) => {
   res.render('create');
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   const info = req.body;
   try {
     await Restaurant.create(info);
-    req.flash('success','新增成功')
+    req.flash('success', '新增成功');
     return res.redirect('/restaurants');
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料新增失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
   try {
     const restaurant = await Restaurant.findByPk(id, {
@@ -50,11 +52,12 @@ router.get('/:id', async (req, res) => {
     });
     return res.render('detail', { restaurant });
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', async (req, res, next) => {
   const id = req.params.id;
   try {
     const restaurant = await Restaurant.findByPk(id, {
@@ -62,11 +65,12 @@ router.get('/:id/edit', async (req, res) => {
     });
     return res.render('edit', { restaurant });
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   const id = req.params.id;
   const body = req.body;
   try {
@@ -84,21 +88,23 @@ router.put('/:id', async (req, res) => {
       },
       { where: { id } }
     );
-    req.flash('success','更新成功')
+    req.flash('success', '更新成功');
     return res.redirect(`/restaurants/${id}`);
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料更新失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
   try {
     await Restaurant.destroy({ where: { id } });
     req.flash('delete', '刪除成功！');
     return res.redirect('/restaurants');
   } catch (err) {
-    console.log(err);
+    err.error_msg = `資料刪除失敗: ${err.message || '未知錯誤'}`;
+    next(err);
   }
 });
 

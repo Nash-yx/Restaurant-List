@@ -7,6 +7,7 @@ const router = require('./routes');
 const session = require('express-session')
 const flash = require('connect-flash');
 const messageHandler = require('./middlewares/message-handler');
+const errorHandler = require('./middlewares/error-handler');
 const portNum = 3000;
 
 // const restaurants = require('./public/jsons/restaurant.json').results;
@@ -36,6 +37,7 @@ app.use(session({
 app.use(flash())
 app.use(messageHandler);
 app.use(router)
+app.use(errorHandler)
 
 app.get('/search', (req, res) => {
   const search = req.query.keyword.trim();
