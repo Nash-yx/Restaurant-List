@@ -41,24 +41,6 @@ app.use(messageHandler);
 app.use(router)
 app.use(errorHandler)
 
-app.get('/search', (req, res) => {
-  const search = req.query.keyword.trim();
-  const matchedRestaurant = search
-    ? restaurants.filter((item) =>
-        Object.values(item).some((value) => {
-          if (value) {
-            return value
-              .toString()
-              .toLowerCase()
-              .includes(search.toLowerCase());
-          }
-          return false;
-        })
-      )
-    : restaurants;
-  console.log(matchedRestaurant);
-  res.render('index.hbs', { restaurants: matchedRestaurant, search: search });
-});
 
 app.listen(portNum, () => {
   console.log(`Server is running on http://localhost:${portNum}`);

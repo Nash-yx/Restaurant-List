@@ -3,6 +3,7 @@ const router = express.Router();
 
 const db = require('../models');
 const Restaurant = db.Restaurant;
+const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -24,6 +25,44 @@ router.get('/', async (req, res, next) => {
     return res.render('index', { restaurants });
   } catch (err) {
     err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
+    next(err);
+  }
+});
+
+router.get('/search', async (req, res, next) => {
+  try {
+    const search = req.query.keyword ? req.query.keyword.trim() : '';
+    let matchedRestaurant = [];
+    
+    if (search) {
+      const escapedSearch = (str) => str.replace(/[%_]/g, (match) => `\\${match}`);
+      const safeSearch = escapedSearch(search)
+      const searchConditions = [
+        { name: { [Op.like]: `%${safeSearch}%` } },
+        { category: { [Op.like]: `%${safeSearch}%` } },
+        { location: { [Op.like]: `%${safeSearch}%` } },
+      ];
+
+      const ratingValue = parseFloat(search);
+      const isRatingValid = !isNaN(ratingValue) && ratingValue >= 0 && ratingValue <= 5;
+      if (isRatingValid) {
+        searchConditions.push({ rating: { [Op.gte]: ratingValue } });
+      }
+
+      matchedRestaurant = await Restaurant.findAll({
+        where: { [Op.or]: searchConditions },
+        raw: true,
+      });
+    } else {
+      // 如果沒有搜索關鍵字，獲取所有餐廳
+      matchedRestaurant = await Restaurant.findAll({ raw: true });
+    }
+    return res.render('index.hbs', {
+      restaurants: matchedRestaurant,
+      search: search,
+    });
+  } catch (err) {
+    err.error_msg = `搜尋過程失敗: ${err.message || '未知錯誤'}`;
     next(err);
   }
 });
