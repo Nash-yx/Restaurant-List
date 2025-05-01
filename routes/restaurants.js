@@ -7,22 +7,25 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   try {
-    const restaurants = await Restaurant.findAll({
-      attributes: [
-        'id',
-        'name',
-        'name_en',
-        'category',
-        'image',
-        'location',
-        'phone',
-        'google_map',
-        'rating',
-        'description',
-      ],
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const { count, rows } = await Restaurant.findAndCountAll({
+      offset: (page - 1) * limit,
+      limit,
       raw: true,
     });
-    return res.render('index', { restaurants });
+    const totalPages = Math.ceil(count / limit);
+    const isFirstPage = page === 1;
+    const isLastPage = page === totalPages;
+    return res.render('index', {
+      restaurants: rows,
+      prev: page > 1 ? page - 1 : page,
+      next: page + 1,
+      currentPage: page,
+      totalPages,
+      isFirstPage,
+      isLastPage,
+    });
   } catch (err) {
     err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
     next(err);
@@ -31,36 +34,75 @@ router.get('/', async (req, res, next) => {
 
 router.get('/search', async (req, res, next) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
     const search = req.query.keyword ? req.query.keyword.trim() : '';
-    let matchedRestaurant = [];
-    
+    const sort = req.query.sort || 'none';
+
     if (search) {
-      const escapedSearch = (str) => str.replace(/[%_]/g, (match) => `\\${match}`);
-      const safeSearch = escapedSearch(search)
-      const searchConditions = [
+      const escapedSearch = (str) =>
+        str.replace(/[%_]/g, (match) => `\\${match}`);
+      const safeSearch = escapedSearch(search);
+      let searchConditions = [
         { name: { [Op.like]: `%${safeSearch}%` } },
         { category: { [Op.like]: `%${safeSearch}%` } },
         { location: { [Op.like]: `%${safeSearch}%` } },
       ];
 
       const ratingValue = parseFloat(search);
-      const isRatingValid = !isNaN(ratingValue) && ratingValue >= 0 && ratingValue <= 5;
+      const isRatingValid =
+        !isNaN(ratingValue) && ratingValue >= 0 && ratingValue <= 5;
       if (isRatingValid) {
         searchConditions.push({ rating: { [Op.gte]: ratingValue } });
       }
-
-      matchedRestaurant = await Restaurant.findAll({
+      let order = [];
+      switch (sort) {
+        case 'ASC':
+          order = [['name', 'ASC']];
+          break;
+        case 'DESC':
+          order = [['name', 'DESC']];
+          break;
+        case 'category':
+          order = [['category', 'ASC']];
+          break;
+        case 'location':
+          order = [['location', 'ASC']];
+          break;
+        case 'rating_DESC':
+          order = [['rating', 'DESC']];
+          break;
+        case 'rating_ASC':
+          order = [['rating', 'ASC']];
+          break;
+        default:
+          order = []; // 不排序
+      }
+      const { count, rows } = await Restaurant.findAndCountAll({
         where: { [Op.or]: searchConditions },
+        order,
+        offset: (page - 1) * limit,
+        limit,
         raw: true,
+      });
+      const totalPages = Math.ceil(count / limit);
+      const isFirstPage = page === 1;
+      const isLastPage = page === totalPages;
+      return res.render('index', {
+        restaurants: rows,
+        prev: page > 1 ? page - 1 : page,
+        next: page + 1,
+        currentPage: page,
+        totalPages,
+        isFirstPage,
+        isLastPage,
+        search,
+        sort
       });
     } else {
       // 如果沒有搜索關鍵字，獲取所有餐廳
-      matchedRestaurant = await Restaurant.findAll({ raw: true });
+      return res.redirect('/restaurants');
     }
-    return res.render('index.hbs', {
-      restaurants: matchedRestaurant,
-      search: search,
-    });
   } catch (err) {
     err.error_msg = `搜尋過程失敗: ${err.message || '未知錯誤'}`;
     next(err);

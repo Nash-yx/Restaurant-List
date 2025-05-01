@@ -36,19 +36,18 @@
         <div class='col-sm-4 col-12'>
           <select name="sort" class="form-select" aria-label="Default select example" id="sort"
               onchange="document.getElementById('search-and-sort').submit()">
-              <option selected disabled>
-                排序方式
-              </option>
-              <option value="none" {{#if (eq sort 'none')}}selected{{/if}}>不排序</option>
-              <option value="ASC" {{#if (eq sort 'ASC')}}selected{{/if}}>依名稱(A→Z)</option>
-              <option value="DESC" {{#if (eq sort 'DESC')}}selected{{/if}}>依名稱(Z→A)</option>
-              <option value="category" {{#if (eq sort 'category')}}selected{{/if}}>依類別</option>
-              <option value="location" {{#if (eq sort 'location')}}selected{{/if}}>依地區</option>
-              <option value="rating_DESC" {{#if (eq sort 'rating_DESC' )}}selected{{/if}}>依評分(高→低)</option>
-              <option value="rating_ASC" {{#if (eq sort 'location_ASC' )}}selected{{/if}}>依評分(低→高)</option>
-            </select>
+            <option selected disabled>
+              排序方式
+            </option>
+            <option value="none" {{#if (eq sort 'none')}}selected{{/if}}>不排序</option>
+            <option value="ASC" {{#if (eq sort 'ASC')}}selected{{/if}}>依名稱(A→Z)</option>
+            <option value="DESC" {{#if (eq sort 'DESC')}}selected{{/if}}>依名稱(Z→A)</option>
+            <option value="category" {{#if (eq sort 'category')}}selected{{/if}}>依類別</option>
+            <option value="location" {{#if (eq sort 'location')}}selected{{/if}}>依地區</option>
+            <option value="rating_DESC" {{#if (eq sort 'rating_DESC' )}}selected{{/if}}>依評分(高→低)</option>
+            <option value="rating_ASC" {{#if (eq sort 'rating_ASC' )}}selected{{/if}}>依評分(低→高)</option>
+          </select>
         </div>
-        
       </form>
 
     </div>
@@ -136,6 +135,54 @@
           </div>
         {{/each}}
       </div>
+
+      <!-- 分頁選擇器 -->
+      <div class="d-flex justify-content-center mt-4 mb-5">
+        <nav aria-label="Restaurant pagination">
+          <div class="d-flex align-items-center">
+            <!-- 上一頁按鈕 (表單方式) -->
+            <form action="/restaurants/search" method="GET" class="m-0">
+              <input type="hidden" name="page" value="{{prev}}">
+              <input type="hidden" name="keyword" value="{{search}}">
+              <input type="hidden" name="sort" value="{{sort}}">
+              <button type="submit" class="btn btn-primary rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 38px;" {{#if isFirstPage}}disabled{{/if}}>
+                <i class="fas fa-angle-double-left"></i>
+              </button>
+            </form>
+            
+            <!-- 頁碼輸入框和總頁數 -->
+            <div class="d-flex align-items-center mx-2" style="height: 38px;">
+              <form action="/restaurants/search" method="GET" class="d-flex m-0">
+                <input type="hidden" name="keyword" value="{{search}}">
+                <input type="hidden" name="sort" value="{{sort}}">
+                <div class="input-group">
+                  <input 
+                    type="number" 
+                    name="page" 
+                    class="form-control text-center rounded-start-2" 
+                    value="{{currentPage}}" 
+                    min="1" 
+                    max="{{totalPages}}" 
+                    style="width: 60px; height: 100%; border-right: none;"
+                  >
+                  <span class="input-group-text rounded-end-2 bg-light" style="height: 100%; border-left: none;">/ {{totalPages}}</span>
+                </div>
+              </form>
+            </div>
+            
+            <!-- 下一頁按鈕 (表單方式) -->
+            <form action="/restaurants/search" method="GET" class="m-0">
+              <input type="hidden" name="page" value="{{next}}">
+              <input type="hidden" name="keyword" value="{{search}}">
+              <input type="hidden" name="sort" value="{{sort}}">
+              <button type="submit" class="btn btn-primary rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 38px;" {{#if isLastPage}}disabled{{/if}}>
+                <i class="fas fa-angle-double-right"></i>
+              </button>
+            </form>
+          </div>
+        </nav>
+      </div>
+
     </div>
   </div>
 </div>
