@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const restaurantsRouter = require('./restaurants');
+const usersRouter = require('./users')
 
 router.use('/restaurants', restaurantsRouter);
+router.use('/users', usersRouter)
 
 router.get('/', (req, res) => {
   return res.redirect('/restaurants');
