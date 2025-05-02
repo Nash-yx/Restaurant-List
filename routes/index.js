@@ -33,10 +33,15 @@ passport.serializeUser((user, done) => {
   return done(null, { id, name, email });
 });
 
+passport.deserializeUser((user, done) => {
+  done(null, { id: user.id });
+});
+
 const restaurantsRouter = require('./restaurants');
 const usersRouter = require('./users');
+const authHandler = require('../middlewares/auth-handler');
 
-router.use('/restaurants', restaurantsRouter);
+router.use('/restaurants', authHandler, restaurantsRouter);
 router.use('/users', usersRouter);
 
 router.get('/', (req, res) => {
@@ -60,8 +65,13 @@ router.post(
   })
 );
 
-router.post('/logout',(req,res)=>{
-  res.send('logout')
-})
+router.post('/logout', (req, res) => {
+  req.logout((error) => {
+    if (error) {
+      next(error);
+    }
+    return res.redirect('/login');
+  });
+});
 
 module.exports = router;

@@ -1,0 +1,37 @@
+<script>
+// 等待DOM完全加載
+document.addEventListener('DOMContentLoaded', function() {
+  // 找到導航欄的container元素
+  const navContainer = document.querySelector('nav .container');
+  
+  if (navContainer) {
+    // 創建登出表單元素
+    const logoutForm = document.createElement('form');
+    logoutForm.setAttribute('action', '/logout');
+    logoutForm.setAttribute('method', 'POST');
+    logoutForm.classList.add('m-0');
+    
+    // 創建登出按鈕
+    const logoutButton = document.createElement('button');
+    logoutButton.setAttribute('type', 'submit');
+    logoutButton.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'd-flex', 'align-items-center');
+    
+    // 創建圖標元素
+    const icon = document.createElement('i');
+    icon.classList.add('fas', 'fa-sign-out-alt', 'me-1');
+    
+    // 創建按鈕文字
+    const buttonText = document.createTextNode('登出');
+    
+    // 組合元素
+    logoutButton.appendChild(icon);
+    logoutButton.appendChild(buttonText);
+    logoutForm.appendChild(logoutButton);
+    
+    // 將表單添加到導航欄
+    navContainer.appendChild(logoutForm);
+  } else {
+    console.error('找不到導航欄容器元素');
+  }
+});
+</script>
