@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   try {
+    console.log('sessoin: ',req.session)
     const page = parseInt(req.query.page) || 1;
     const limit = 6;
     const { count, rows } = await Restaurant.findAndCountAll({

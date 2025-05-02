@@ -11,7 +11,7 @@
         <div class="card-body py-4">
           <form action="/users" method="POST">
             <div class="mb-3">
-              <label for="email" class="form-label">Email (登入帳號)</label>
+              <label for="email" class="form-label">Email (登入帳號) <span class='text-danger'>*</span></label>
               <input type="email" id="email" name="email" class="form-control" required>
             </div>
             <div class="mb-3">
@@ -19,11 +19,11 @@
               <input type="text" id="name" name="name" class="form-control">
             </div>
             <div class="mb-3">
-              <label for="password" class="form-label">密碼</label>
+              <label for="password" class="form-label">密碼 <span class='text-danger'>*</span></label>
               <input type="password" id="password" name="password" class="form-control" required>
             </div>
             <div class="mb-4">
-              <label for="confirmPassword" class="form-label">確認密碼</label>
+              <label for="confirmPassword" class="form-label">確認密碼 <span class='text-danger'>*</span></label>
               <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
             </div>
             <div class="d-grid gap-2">

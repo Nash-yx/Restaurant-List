@@ -8,6 +8,7 @@ const session = require('express-session')
 const flash = require('connect-flash');
 const messageHandler = require('./middlewares/message-handler');
 const errorHandler = require('./middlewares/error-handler');
+const passport = require('passport')
 const portNum = 3000;
 
 if(process.env.NODE_ENV === 'development'){
@@ -36,7 +37,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+
 app.use(flash())
+
+app.use(passport.initialize())
 app.use(messageHandler);
 app.use(router)
 app.use(errorHandler)
