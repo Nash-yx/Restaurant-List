@@ -3,6 +3,7 @@ const router = express.Router();
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const bcrypt = require('bcryptjs');
 
 const db = require('../models');
 const User = db.User;
@@ -17,9 +18,16 @@ passport.use(
           where: { email: username },
           raw: true,
         });
-        if (!user || user.password !== password) {
+        console.log(user)
+        if (!user) {
           return done(null, false, { message: 'email或密碼錯誤' });
         }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return done(null, false, { message: 'email或密碼錯誤' });
+        }
+
         return done(null, user);
       } catch (error) {
         done(error);
