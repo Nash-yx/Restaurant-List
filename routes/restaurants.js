@@ -7,41 +7,13 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   try {
-    // console.log('sessoin: ',req.session)
-    // console.log('req.user: ', req.user)
+    const userId = req.user.id;
     const page = parseInt(req.query.page) || 1;
-    const limit = 6;
-    const { count, rows } = await Restaurant.findAndCountAll({
-      offset: (page - 1) * limit,
-      limit,
-      raw: true,
-    });
-    const totalPages = Math.ceil(count / limit);
-    const isFirstPage = page === 1;
-    const isLastPage = page === totalPages;
-    return res.render('index', {
-      restaurants: rows,
-      prev: page > 1 ? page - 1 : page,
-      next: page + 1,
-      currentPage: page,
-      totalPages,
-      isFirstPage,
-      isLastPage,
-    });
-  } catch (err) {
-    err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
-    next(err);
-  }
-});
-
-router.get('/search', async (req, res, next) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 6;
     const search = req.query.keyword ? req.query.keyword.trim() : '';
     const sort = req.query.sort || 'none';
-
-    if (search) {
+    const limit = 6;
+    
+    if (search || sort) {
       const escapedSearch = (str) =>
         str.replace(/[%_]/g, (match) => `\\${match}`);
       const safeSearch = escapedSearch(search);
@@ -81,7 +53,7 @@ router.get('/search', async (req, res, next) => {
           order = []; // 不排序
       }
       const { count, rows } = await Restaurant.findAndCountAll({
-        where: { [Op.or]: searchConditions },
+        where: { userId, [Op.or]: searchConditions },
         order,
         offset: (page - 1) * limit,
         limit,
@@ -99,17 +71,33 @@ router.get('/search', async (req, res, next) => {
         isFirstPage,
         isLastPage,
         search,
-        sort
+        sort,
       });
-    } else {
-      // 如果沒有搜索關鍵字，獲取所有餐廳
-      return res.redirect('/restaurants');
     }
+    const { count, rows } = await Restaurant.findAndCountAll({
+      where: { userId },
+      offset: (page - 1) * limit,
+      limit,
+      raw: true,
+    });
+    const totalPages = Math.ceil(count / limit);
+    const isFirstPage = page === 1;
+    const isLastPage = page === totalPages;
+    return res.render('index', {
+      restaurants: rows,
+      prev: page > 1 ? page - 1 : page,
+      next: page + 1,
+      currentPage: page,
+      totalPages,
+      isFirstPage,
+      isLastPage,
+    });
   } catch (err) {
-    err.error_msg = `搜尋過程失敗: ${err.message || '未知錯誤'}`;
+    err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
     next(err);
   }
 });
+
 
 router.get('/new', (req, res) => {
   res.render('create');
@@ -117,6 +105,8 @@ router.get('/new', (req, res) => {
 
 router.post('/', async (req, res, next) => {
   const info = req.body;
+  const userId = req.user.id;
+  info.userId = userId;
   try {
     await Restaurant.create(info);
     req.flash('success', '新增成功');
@@ -129,10 +119,19 @@ router.post('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   const id = req.params.id;
+  const userId = req.user.id;
   try {
     const restaurant = await Restaurant.findByPk(id, {
       raw: true,
     });
+    if(!restaurant){
+      req.flash('error','找不到資料')
+      return res.redirect('/restaurants')
+    }
+    if(restaurant.userId !== userId){
+      req.flash('error', '權限不足')
+      return res.redirect('/restaurants')
+    }
     return res.render('detail', { restaurant });
   } catch (err) {
     err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
@@ -142,10 +141,20 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/:id/edit', async (req, res, next) => {
   const id = req.params.id;
+  const userId = req.user.id;
+
   try {
     const restaurant = await Restaurant.findByPk(id, {
       raw: true,
     });
+    if (!restaurant) {
+      req.flash('error', '找不到資料');
+      return res.redirect('/restaurants');
+    }
+    if (restaurant.userId !== userId) {
+      req.flash('error', '權限不足');
+      return res.redirect('/restaurants');
+    }
     return res.render('edit', { restaurant });
   } catch (err) {
     err.error_msg = `資料取得失敗: ${err.message || '未知錯誤'}`;
@@ -156,8 +165,18 @@ router.get('/:id/edit', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   const id = req.params.id;
   const body = req.body;
+  const userId = req.user.id;
   try {
-    await Restaurant.update(
+    const restaurant = await Restaurant.findByPk(id);
+    if (!restaurant) {
+      req.flash('error', '找不到資料');
+      return res.redirect('/restaurants');
+    }
+    if (restaurant.userId !== userId) {
+      req.flash('error', '權限不足');
+      return res.redirect('/restaurants');
+    }
+    await restaurant.update(
       {
         name: body.name,
         name_en: body.name_en,
@@ -168,8 +187,7 @@ router.put('/:id', async (req, res, next) => {
         google_map: body.google_map,
         rating: body.rating,
         description: body.description,
-      },
-      { where: { id } }
+      }
     );
     req.flash('success', '更新成功');
     return res.redirect(`/restaurants/${id}`);
@@ -181,8 +199,19 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
+  const userId = req.user.id;
+
   try {
-    await Restaurant.destroy({ where: { id } });
+    const restaurant = await Restaurant.findByPk(id);
+    if (!restaurant) {
+      req.flash('error', '找不到資料');
+      return res.redirect('/restaurants');
+    }
+    if (restaurant.userId !== userId) {
+      req.flash('error', '權限不足');
+      return res.redirect('/restaurants');
+    }
+    await restaurant.destroy({ where: { id } });
     req.flash('delete', '刪除成功！');
     return res.redirect('/restaurants');
   } catch (err) {

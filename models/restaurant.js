@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Restaurant.belongsTo(models.User);
+      Restaurant.belongsTo(models.User,{
+        // foreignKey: 'userId'
+      });
     }
   }
   Restaurant.init(

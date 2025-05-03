@@ -13,7 +13,7 @@
         </a>
       </div>
 
-      <form action='/restaurants/search' id='search-and-sort' class='row g-2 align-items-center justify-content-end'>
+      <form action='/restaurants' id='search-and-sort' class='row g-2 align-items-center justify-content-end'>
         <div class='col-sm-8 col-12'>
           <div class='input-group' style="height: 38px;">
             <input
@@ -142,7 +142,7 @@
         <nav aria-label="Restaurant pagination">
           <div class="d-flex align-items-center">
             <!-- 上一頁按鈕 (表單方式) -->
-            <form action="/restaurants/search" method="GET" class="m-0">
+            <form action="/restaurants" method="GET" class="m-0">
               <input type="hidden" name="page" value="{{prev}}">
               <input type="hidden" name="keyword" value="{{search}}">
               <input type="hidden" name="sort" value="{{sort}}">
@@ -153,7 +153,7 @@
             
             <!-- 頁碼輸入框和總頁數 -->
             <div class="d-flex align-items-center mx-2" style="height: 38px;">
-              <form action="/restaurants/search" method="GET" class="d-flex m-0">
+              <form action="/restaurants" method="GET" class="d-flex m-0">
                 <input type="hidden" name="keyword" value="{{search}}">
                 <input type="hidden" name="sort" value="{{sort}}">
                 <div class="input-group">
@@ -172,7 +172,7 @@
             </div>
             
             <!-- 下一頁按鈕 (表單方式) -->
-            <form action="/restaurants/search" method="GET" class="m-0">
+            <form action="/restaurants" method="GET" class="m-0">
               <input type="hidden" name="page" value="{{next}}">
               <input type="hidden" name="keyword" value="{{search}}">
               <input type="hidden" name="sort" value="{{sort}}">
