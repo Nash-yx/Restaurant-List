@@ -1,5 +1,11 @@
 const express = require('express');
 const app = express();
+const portNum = 3000;
+
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config();
+}
+
 const { engine } = require('express-handlebars');
 const methodOverride = require('method-override');
 const path = require('path');
@@ -9,11 +15,8 @@ const flash = require('connect-flash');
 const messageHandler = require('./middlewares/message-handler');
 const errorHandler = require('./middlewares/error-handler');
 const passport = require('passport')
-const portNum = 3000;
 
-if(process.env.NODE_ENV === 'development'){
-  require('dotenv').config()
-}
+
 
 // 設定模板引擎
 app.engine('.hbs', engine({
