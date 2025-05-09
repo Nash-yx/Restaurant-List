@@ -138,6 +138,7 @@
       </div>
 
       <!-- 分頁選擇器 -->
+      {{#if restaurants.length}}
       <div class="d-flex justify-content-center mt-4 mb-5">
         <nav aria-label="Restaurant pagination">
           <div class="d-flex align-items-center">
@@ -183,7 +184,41 @@
           </div>
         </nav>
       </div>
+      {{else}}
+      <!-- 當沒有資料時顯示的內容 -->
+      <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-5 py-4">
+        <div class="text-center empty-state-container">
+          <!-- 餐廳圖標 -->
+          <i class="fas fa-utensils fa-3x mb-3 text-secondary"></i>
+          
+          <!-- 主要提示文字 -->
+          <h5 class="fw-bold text-secondary mb-2">沒有符合條件的餐廳</h5>
+          
+        </div>
+      </div>
+      {{/if}}
 
     </div>
   </div>
 </div>
+
+<style>
+  .empty-state-container {
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+  }
+  
+  .empty-state-container:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .empty-state-container .fa-utensils {
+    color: #6c757d;
+    opacity: 0.7;
+  }
+</style>
