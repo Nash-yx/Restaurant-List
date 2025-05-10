@@ -14,7 +14,7 @@ const session = require('express-session')
 const flash = require('connect-flash');
 const messageHandler = require('./middlewares/message-handler');
 const errorHandler = require('./middlewares/error-handler');
-const passport = require('passport')
+const passport = require('./config/passport')
 
 
 
